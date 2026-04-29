@@ -1,15 +1,429 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Fury, sua impressão 3D!</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <header></header>
-        <main>
-            <h1>Nos mande uma mensagem para garantir 
-                <strong>sua impressão 3d!</strong></h1>
-                <a href="meudeus">teste</a>
-        </main>
-    </body>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furylab 3D - Catálogo de Produtos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 3em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 COLUNAS (LARGURA) */
+            grid-template-rows: repeat(7, 1fr);   /* 7 LINHAS (ALTURA) */
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            transition: all 0.4s ease;
+            height: 420px; /* ALTOS PARA 7 LINHAS */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            border: 3px solid transparent;
+        }
+
+        .product-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+            border-color: #667eea;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px; /* FOTOS GIGANTES VERTICAIS */
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 5em; /* EMOJIS ENORMES */
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-description {
+            color: #7f8c8d;
+            font-size: 15px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-price {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* NUMERAÇÃO PARA IDENTIFICAR POSIÇÃO */
+        .card-number {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(102, 126, 234, 0.95);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: bold;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover .card-number {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .product-card {
+                height: 380px;
+            }
+            
+            .product-image {
+                height: 180px;
+                font-size: 4em;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr; /* 1 COLUNA NO MOBILE */
+                gap: 20px;
+            }
+            
+            .container {
+                max-width: 400px;
+            }
+            
+            .header {
+                padding: 15px 20px;
+            }
+            
+            .logo {
+                font-size: 2.2em;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 220px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Furylab 3D</div>
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="scrollToHome()">Home</button>
+                <button class="nav-btn" onclick="scrollToProducts()">Produtos</button>
+                <button class="nav-btn" onclick="openContact()">Contato</button>
+            </div>
+        </div>
+
+        <div id="home-section" style="text-align: center; color: white; margin-bottom: 40px;">
+            <h1 style="font-size: 2.5em; margin-bottom: 20px;">Furylab 3D</h1>
+            <p style="font-size: 1.2em; max-width: 600px; margin: 0 auto;">21 modelos exclusivos em impressão 3D - Grade 3x7 perfeita!</p>
+        </div>
+
+        <div id="products-section">
+            <h2 style="text-align: center; color: white; font-size: 2.5em; margin-bottom: 30px;">Catálogo 3D</h2>
+            <div class="grid">
+                <!-- GRADE 3x7 = 21 PRODUTOS -->
+                <div class="product-card">
+                    <span class="card-number">1</span>
+                    <div class="product-image">🦁</div>
+                    <div class="product-name">Leão Africano</div>
+                    <div class="product-description">Juba completa e pose majestosa em resina premium</div>
+                    <div class="product-price">R$ 89,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">2</span>
+                    <div class="product-image">🐯</div>
+                    <div class="product-name">Tigre Bengal</div>
+                    <div class="product-description">Listras autênticas e músculos definidos 15cm</div>
+                    <div class="product-price">R$ 129,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">3</span>
+                    <div class="product-image">🐻</div>
+                    <div class="product-name">Urso Grizzly</div>
+                    <div class="product-description">Patas poderosas e garras realistas 18cm altura</div>
+                    <div class="product-price">R$ 99,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">4</span>
+                    <div class="product-image">🐺</div>
+                    <div class="product-name">Lobo Uivando</div>
+                    <div class="product-description">Pose dinâmica com detalhes de pelagem 16cm</div>
+                    <div class="product-price">R$ 79,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">5</span>
+                    <div class="product-image">🦅</div>
+                    <div class="product-name">Águia Careca</div>
+                    <div class="product-description">Asas abertas em voo majestoso 20cm envergadura</div>
+                    <div class="product-price">R$ 149,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">6</span>
+                    <div class="product-image">🐲</div>
+                    <div class="product-name">Dragão Mini</div>
+                    <div class="product-description">Escamas texturizadas e asas membranosas 22cm</div>
+                    <div class="product-price">R$ 199,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">7</span>
+                    <div class="product-image">🦊</div>
+                    <div class="product-name">Raposa Ártica</div>
+                    <div class="product-description">Pelagem branca fofa e olhos azuis 14cm</div>
+                    <div class="product-price">R$ 69,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">8</span>
+                    <div class="product-image">🐘</div>
+                    <div class="product-name">Elefante Baby</div>
+                    <div class="product-description">Tromba enrolada e orelhinhas 17cm altura</div>
+                    <div class="product-price">R$ 159,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">9</span>
+                    <div class="product-image">🦒</div>
+                    <div class="product-name">Girafa Bebê</div>
+                    <div class="product-description">Pescoço longo e manchas fofas 25cm altura</div>
+                    <div class="product-price">R$ 179,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">10</span>
+                    <div class="product-image">🐪</div>
+                    <div class="product-name">Camelo do Deserto</div>
+                    <div class="product-description">Corcova distinta e expressão sábia 19cm</div>
+                    <div class="product-price">R$ 89,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">11</span>
+                    <div class="product-image">🦏</div>
+                    <div class="product-name">Rino Bebê</div>
+                    <div class="product-description">Chifre pequeno e pele texturizada 16cm</div>
+                    <div class="product-price">R$ 139,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">12</span>
+                    <div class="product-image">🐬</div>
+                    <div class="product-name">Golfinho Saltando</div>
+                    <div class="product-description">Salto acrobático no ar 18cm comprimento</div>
+                    <div class="product-price">R$ 119,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">13</span>
+                    <div class="product-image">🦈</div>
+                    <div class="product-name">Tubarão Martelo</div>
+                    <div class="product-description">Cabeça única e nadadeiras 20cm</div>
+                    <div class="product-price">R$ 169,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">14</span>
+                    <div class="product-image">🐙</div>
+                    <div class="product-name">Polvo Gigante</div>
+                    <div class="product-description">8 tentáculos com ventosas 22cm</div>
+                    <div class="product-price">R$ 189,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">15</span>
+                    <div class="product-image">🦑</div>
+                    <div class="product-name">Lula Colossal</div>
+                    <div class="product-description">Tentáculos longos e olhos grandes 24cm</div>
+                    <div class="product-price">R$ 209,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">16</span>
+                    <div class="product-image">🐢</div>
+                    <div class="product-name">Tartaruga Marinha</div>
+                    <div class="product-description">Casco detalhado e nadadeiras 17cm</div>
+                    <div class="product-price">R$ 99,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">17</span>
+                    <div class="product-image">🦘</div>
+                    <div class="product-name">Canguru Boxeador</div>
+                    <div class="product-description">Pose de luta e bolsa 19cm altura</div>
+                    <div class="product-price">R$ 129,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">18</span>
+                    <div class="product-image">🐨</div>
+                    <div class="product-name">Coala Dormindo</div>
+                    <div class="product-description">Abraçado no galho eucalipto 15cm</div>
+                    <div class="product-price">R$ 79,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">19</span>
+                    <div class="product-image">🦥</div>
+                    <div class="product-name">Preguiça Preguiçosa</div>
+                    <div class="product-description">Suspensa de cabeça pra baixo 16cm</div>
+                    <div class="product-price">R$ 89,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">20</span>
+                    <div class="product-image">🐼</div>
+                    <div class="product-name">Panda Com Bambu</div>
+                    <div class="product-description">Olhos pretos e bambu na pata 18cm</div>
+                    <div class="product-price">R$ 149,90</div>
+                </div>
+
+                <div class="product-card">
+                    <span class="card-number">21</span>
+                    <div class="product-image">🦚</div>
+                    <div class="product-name">Pavão Real</div>
+                    <div class="product-description">Cauda aberta com olhos azuis 25cm</div>
+                    <div class="product-price">R$ 199,90</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function scrollToHome() {
+            document.getElementById('home-section').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        function scrollToProducts() {
+            document.getElementById('products-section').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        function openContact() {
+            alert('📞 Furylab 3D - Contato\n\n📧 contato@furylab3d.com\n📱 (11) 99999-9999\n📍 Rua 3D Center, 123\n🛒 Grade 3x7 - 21 Modelos\n✨ Qualidade Premium!');
+        }
+    </script>
+</body>
 </html>
